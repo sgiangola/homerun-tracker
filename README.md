@@ -7,4 +7,12 @@ this app uses a Flask backend to serve pages as well as for API calls for a loca
 
 this app also uses React for frontend UI. Calls to the flask API are made thru JSX via Axios. My first official foray into React so pay no mind to whatever may seem cobbled together =)
 
+again note that db setup is not included:
+
+run flask app
+`python app.py`
+
+run webpack to observe jsx for changes
+`webpack --watch`
+
 special thanks to the boilerplate repo found here: https://github.com/bonniee/react-flask
