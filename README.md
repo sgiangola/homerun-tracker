@@ -10,9 +10,11 @@ this app also uses React for frontend UI. Calls to the flask API are made thru J
 again note that db setup is not included:
 
 run flask app
+
 `python app.py`
 
 run webpack to observe jsx for changes
+
 `webpack --watch`
 
 special thanks to the boilerplate repo found here: https://github.com/bonniee/react-flask
