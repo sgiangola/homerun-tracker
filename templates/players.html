@@ -1,0 +1,31 @@
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='react-table.css') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Homerun Tracker</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Users</a></li>
+      <li class="active"><a href="/players">Players</a></li>
+      <li><a href="/hybrid">Hybrid</a></li>
+    </ul>
+  </div>
+
+</nav>
+  <div>
+  <div id="dtab"></div>
+  </div>
+
+  <!-- Attach React components -->
+  <script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
+</body>
