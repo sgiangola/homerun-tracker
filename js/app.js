@@ -39,6 +39,7 @@ class Table extends React.Component {
     ]
 
       return (<ReactTable
+        showFilters={true}
         data={hrdata}
         columns={columns}/>)
 
@@ -83,7 +84,7 @@ class Table2 extends React.Component {
 
       return (<ReactTable
         expanderColumnWdith={10}
-        showPagination={false}
+        showFilters={true}
         data={hrdata}
         columns={columns}/>)
 

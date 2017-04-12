@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from sqlalchemy.sql.expression import update
 from datetime import datetime
-from . import config
+import config
 
 header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
 

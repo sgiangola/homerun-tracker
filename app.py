@@ -5,7 +5,7 @@ import logging
 import json
 
 # local
-from . import config
+import config
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.db_uri
