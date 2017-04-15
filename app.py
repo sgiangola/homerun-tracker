@@ -62,7 +62,8 @@ def get_totals():
             from entries e
             inner join player_stats p
             on e.playerid = p.playerid
-            group by name''')
+            group by name
+            order by sum(cast(homeruns as int)) desc''')
     results = [{'name' : x['name'], 'homeruns' : x['homeruns']} for x in ex_q]
     return jsonify({'stats' : results})
 
