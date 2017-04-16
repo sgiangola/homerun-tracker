@@ -14,7 +14,7 @@ class Table extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('https://guarded-dawn-62941.herokuapp.com/api/players')
+    axios.get('https://slugger-stats.herokuapp.com/api/players')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
@@ -58,7 +58,7 @@ class Table2 extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('https://guarded-dawn-62941.herokuapp.com/api/usertotals')
+    axios.get('https://slugger-stats.herokuapp.com/api/usertotals')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
@@ -103,7 +103,7 @@ class Table3 extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('https://guarded-dawn-62941.herokuapp.com/api/hybrid')
+    axios.get('https://slugger-stats.herokuapp.com/api/hybrid')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
