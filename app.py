@@ -82,8 +82,6 @@ def datetime_handler(dt):
 # URL routing
 @app.route('/')
 def index():
-    print(os.environ.get('DATABASE_URL'))
-    sys.stdout.flush()
     return render_template('index.html')
 
 @app.route('/players')
