@@ -4,10 +4,14 @@ from datetime import datetime
 import logging
 import json
 import os
+import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
+
+print(os.environ.get('DATABASE_URL'))
+sys.stdout.flush()
 
 # model declaration
 class Entries(db.Model):
