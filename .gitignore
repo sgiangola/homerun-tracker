@@ -1,7 +1,6 @@
 .DS_Store
 venv
 node_modules
-static/bundle.js
 config.py
 __pycache__
 .env
