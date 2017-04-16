@@ -10,9 +10,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
-print(os.environ.get('DATABASE_URL'))
-sys.stdout.flush()
-
 # model declaration
 class Entries(db.Model):
     __tablename__ = 'entries'
@@ -85,7 +82,9 @@ def datetime_handler(dt):
 # URL routing
 @app.route('/')
 def index():
-  return render_template('index.html')
+    print(os.environ.get('DATABASE_URL'))
+    sys.stdout.flush()
+    return render_template('index.html')
 
 @app.route('/players')
 def players():
