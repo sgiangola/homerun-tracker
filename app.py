@@ -7,9 +7,7 @@ import json
 # local
 #mport config
 
-db_uri = '''postgres://dezuyilnauiftu:09d2cb28447f94247eab4eb8b9d78821cb20bea43f
-        bec94df04c37c370320d73@ec2-54-221-254-72.compute-1.amazonaws.com:5432/
-        d423lgmndq5s5g'''
+db_uri = '''postgres://dezuyilnauiftu:09d2cb28447f94247eab4eb8b9d78821cb20bea43fbec94df04c37c370320d73@ec2-54-221-254-72.compute-1.amazonaws.com:5432/d423lgmndq5s5g'''
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
