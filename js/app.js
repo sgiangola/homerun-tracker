@@ -14,7 +14,7 @@ class Table extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('http://127.0.0.1:5000/api/players')
+    axios.get('./api/players')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
@@ -58,7 +58,7 @@ class Table2 extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('http://127.0.0.1:5000/api/usertotals')
+    axios.get('./api/usertotals')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
@@ -103,7 +103,7 @@ class Table3 extends React.Component {
   // Lifecycle method
   componentDidMount (props) {
     // Make HTTP reques with Axios
-    axios.get('http://127.0.0.1:5000/api/hybrid')
+    axios.get('./api/hybrid')
     .then(function (response) {
       this.setState({data:response.data.stats});
     }.bind(this));
