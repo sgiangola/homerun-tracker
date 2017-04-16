@@ -34,5 +34,9 @@
   "repository": {
     "type": "git",
     "url": "x"
+  },
+  "scripts" : {
+    "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
+    "heroku-postbuild": "npm run webpack:deploy"
   }
 }
