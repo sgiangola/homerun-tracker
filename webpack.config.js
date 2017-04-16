@@ -5,6 +5,7 @@ module.exports = {
   ],
   output: {
     path: __dirname + '/static',
+    publicPath: '/',
     filename: "bundle.js"
   },
   module: {
@@ -17,13 +18,11 @@ module.exports = {
         },
         exclude: /node_modules/
       }
-    ],
-  //   rules: [
-  //   {
-  //     use: [ 'style-loader', 'css-loader' ]
-  //   }
-  // ]
+    ]
 
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
   },
   plugins: [
   ]
