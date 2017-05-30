@@ -15,12 +15,14 @@ import schedule, time
 
 
 
-header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
 
-url = 'https://www.mysportsfeeds.com/api/feed/pull/\
-mlb/2017-regular/cumulative_player_stats.json?playerstats=AB,H,R,HR,ER'
 
-def get_data():
+def get_load():
+
+    header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
+
+    url = 'https://www.mysportsfeeds.com/api/feed/pull/\
+    mlb/2017-regular/cumulative_player_stats.json?playerstats=AB,H,R,HR,ER'
     print('Getting data...', str(datetime.now()))
     resp = r.get(url=url, headers=header)
     print('Done.')
@@ -29,25 +31,27 @@ def get_data():
 
     players = data['playerstatsentry']
 
-engine = create_engine(config.db_uri)
+    engine = create_engine(config.db_uri)
 
-Base = declarative_base()
+    Base = declarative_base()
 
-class player_stats(Base):
-    __tablename__ = 'player_stats'
-    playerid = Column(Integer, primary_key=True)
-    firstname = Column(String)
-    lastname = Column(String)
-    team = Column(String)
-    homeruns = Column(Integer)
-    last_updated = Column(DateTime)
 
-class entries(Base):
-    __tablename__ = 'entries'
-    name = Column(String, primary_key=True)
-    playerid = Column(Integer, primary_key=True)
 
-def load():
+    class player_stats(Base):
+        __tablename__ = 'player_stats'
+        playerid = Column(Integer, primary_key=True)
+        firstname = Column(String)
+        lastname = Column(String)
+        team = Column(String)
+        homeruns = Column(Integer)
+        last_updated = Column(DateTime)
+
+    class entries(Base):
+        __tablename__ = 'entries'
+        name = Column(String, primary_key=True)
+        playerid = Column(Integer, primary_key=True)
+
+
     session = sessionmaker()
 
     session.configure(bind=engine)
@@ -67,11 +71,11 @@ def load():
     s.commit()
 
     s.close()
+    print('Done.')
 
-schedule.every(24).hours.do(get_data)
-schedule.every(24).hours.do(load)
 
-While True:
+schedule.every(24).hours.do(get_load)
+
+while True:
     schedule.run_pending()
-
-print('Done.')
+    time.sleep(86399)
