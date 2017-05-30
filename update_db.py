@@ -11,19 +11,23 @@ from sqlalchemy import select
 from sqlalchemy.sql.expression import update
 from datetime import datetime
 import config
+import schedule, time
+
+
 
 header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
 
 url = 'https://www.mysportsfeeds.com/api/feed/pull/\
 mlb/2017-regular/cumulative_player_stats.json?playerstats=AB,H,R,HR,ER'
 
-print('Getting data...')
-resp = r.get(url=url, headers=header)
-print('Done.')
+def get_data():
+    print('Getting data...', str(datetime.now()))
+    resp = r.get(url=url, headers=header)
+    print('Done.')
 
-data = json.loads(resp.text)['cumulativeplayerstats']
+    data = json.loads(resp.text)['cumulativeplayerstats']
 
-players = data['playerstatsentry']
+    players = data['playerstatsentry']
 
 engine = create_engine(config.db_uri)
 
@@ -43,23 +47,31 @@ class entries(Base):
     name = Column(String, primary_key=True)
     playerid = Column(Integer, primary_key=True)
 
-session = sessionmaker()
+def load():
+    session = sessionmaker()
 
-session.configure(bind=engine)
+    session.configure(bind=engine)
 
-s = session()
+    s = session()
 
-print('Loading data...')
-now = str(datetime.now())
-for p in players:
-    upd = update(table=player_stats)\
-    .where(and_(player_stats.firstname==p['player']['FirstName'],
-                player_stats.lastname==p['player']['LastName'],
-                player_stats.team==p['team']['Name'],))\
-    .values(homeruns=p['stats']['Homeruns']['#text'], last_updated=now)
-    s.execute(upd)
+    print('Loading data...')
+    now = str(datetime.now())
+    for p in players:
+        upd = update(table=player_stats)\
+        .where(and_(player_stats.firstname==p['player']['FirstName'],
+                    player_stats.lastname==p['player']['LastName'],
+                    player_stats.team==p['team']['Name'],))\
+        .values(homeruns=p['stats']['Homeruns']['#text'], last_updated=now)
+        s.execute(upd)
 
-s.commit()
+    s.commit()
 
-s.close()
+    s.close()
+
+schedule.every(24).hours.do(get_data)
+schedule.every(24).hours.do(load)
+
+While True:
+    schedule.run_pending()
+
 print('Done.')
