@@ -11,55 +11,71 @@ from sqlalchemy import select
 from sqlalchemy.sql.expression import update
 from datetime import datetime
 import config
+import schedule, time
 
-header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
 
-url = 'https://www.mysportsfeeds.com/api/feed/pull/\
-mlb/2017-regular/cumulative_player_stats.json?playerstats=AB,H,R,HR,ER'
 
-print('Getting data...')
-resp = r.get(url=url, headers=header)
-print('Done.')
 
-data = json.loads(resp.text)['cumulativeplayerstats']
 
-players = data['playerstatsentry']
+def get_load():
 
-engine = create_engine(config.db_uri)
+    header = {'Authorization' : 'Basic ' + b64encode(config.api_credentials).decode()}
 
-Base = declarative_base()
+    url = 'https://www.mysportsfeeds.com/api/feed/pull/\
+    mlb/2017-regular/cumulative_player_stats.json?playerstats=AB,H,R,HR,ER'
+    print('Getting data...', str(datetime.now()))
+    resp = r.get(url=url, headers=header)
+    print('Done.')
 
-class player_stats(Base):
-    __tablename__ = 'player_stats'
-    playerid = Column(Integer, primary_key=True)
-    firstname = Column(String)
-    lastname = Column(String)
-    team = Column(String)
-    homeruns = Column(Integer)
-    last_updated = Column(DateTime)
+    data = json.loads(resp.text)['cumulativeplayerstats']
 
-class entries(Base):
-    __tablename__ = 'entries'
-    name = Column(String, primary_key=True)
-    playerid = Column(Integer, primary_key=True)
+    players = data['playerstatsentry']
 
-session = sessionmaker()
+    engine = create_engine(config.db_uri)
 
-session.configure(bind=engine)
+    Base = declarative_base()
 
-s = session()
 
-print('Loading data...')
-now = str(datetime.now())
-for p in players:
-    upd = update(table=player_stats)\
-    .where(and_(player_stats.firstname==p['player']['FirstName'],
-                player_stats.lastname==p['player']['LastName'],
-                player_stats.team==p['team']['Name'],))\
-    .values(homeruns=p['stats']['Homeruns']['#text'], last_updated=now)
-    s.execute(upd)
 
-s.commit()
+    class player_stats(Base):
+        __tablename__ = 'player_stats'
+        playerid = Column(Integer, primary_key=True)
+        firstname = Column(String)
+        lastname = Column(String)
+        team = Column(String)
+        homeruns = Column(Integer)
+        last_updated = Column(DateTime)
 
-s.close()
-print('Done.')
+    class entries(Base):
+        __tablename__ = 'entries'
+        name = Column(String, primary_key=True)
+        playerid = Column(Integer, primary_key=True)
+
+
+    session = sessionmaker()
+
+    session.configure(bind=engine)
+
+    s = session()
+
+    print('Loading data...')
+    now = str(datetime.now())
+    for p in players:
+        upd = update(table=player_stats)\
+        .where(and_(player_stats.firstname==p['player']['FirstName'],
+                    player_stats.lastname==p['player']['LastName'],
+                    player_stats.team==p['team']['Name'],))\
+        .values(homeruns=p['stats']['Homeruns']['#text'], last_updated=now)
+        s.execute(upd)
+
+    s.commit()
+
+    s.close()
+    print('Done.')
+
+
+schedule.every(24).hours.do(get_load)
+
+while True:
+    schedule.run_pending()
+    time.sleep(86399)
